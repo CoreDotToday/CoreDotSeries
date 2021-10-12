@@ -10,6 +10,13 @@ Sequential Data Analytics Tool
 * Free software: Apache Software License 2.0
 
 
+Installation
+------------
+```
+pip install git+https://github.com/CoreDotToday/CoreDotSeries.git
+```
+
+
 Features
 --------
 
