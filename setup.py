@@ -10,7 +10,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', ]
+requirements = ['Click>=7.1.2', ]
 
 test_requirements = ['pytest>=3', ]
 
@@ -22,7 +22,6 @@ setup(
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
-        'Natural Language :: English',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -38,12 +37,12 @@ setup(
     license="Apache Software License 2.0",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='series',
-    name='series',
+    keywords='coredotseries',
+    name='coredotseries',
     packages=find_packages(include=['series', 'series.*']),
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/coredottoday/series',
+    url='https://github.com/coredottoday/CoreDotSeries',
     version='0.1.0',
     zip_safe=False,
 )
