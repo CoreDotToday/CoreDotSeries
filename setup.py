@@ -42,7 +42,7 @@ setup(
     packages=find_packages(include=['series', 'series.*']),
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/coredottoday/CoreDotSeries',
-    version='0.1.0',
+    url='https://github.com/coredottoday/CoreDotSeries.git',
+    version='0.1.1',
     zip_safe=False,
 )
