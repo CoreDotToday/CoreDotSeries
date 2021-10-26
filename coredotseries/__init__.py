@@ -1,3 +1,7 @@
+import os
+from .series import *
+
+PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 """Top-level package for Core.Series."""
 
 __author__ = """CoreDotToday"""
