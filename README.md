@@ -13,7 +13,7 @@ Sequential Data Analytics Tool
 Installation
 ------------
 ```
-pip install git+https://github.com/CoreDotToday/CoreDotSeries.git
+pip install coredotseries
 ```
 
 
