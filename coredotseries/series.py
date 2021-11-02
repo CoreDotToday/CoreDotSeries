@@ -284,9 +284,9 @@ def get_peak_wave_interval(df, peak_x=None):
     target_value = (df[peak_x_1] + df[peak_x_2]) / 2
 
     if df[peak_x_1] > df[peak_x_2]:
-        case = 1
+        case = 1  # sine style
     else:
-        case = 2
+        case = 2  # -sine style
 
     if case == 1:
         cand_df = df.loc[:peak_x_1]
