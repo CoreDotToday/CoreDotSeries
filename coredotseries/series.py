@@ -6,6 +6,7 @@ import operator
 import plotly.express as px
 import plotly.graph_objects as go
 from scipy.signal import argrelextrema
+from scipy.signal import find_peaks
 import math
 
 
@@ -242,3 +243,20 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
             print('number of peak_low:', len(peak_low))
             print('number of peaks_high:', len(peak_high))
     return peak_low, peak_high
+
+
+def get_peak_points(df):
+    """get max, min points
+
+    Parameter
+    ---------
+    df : pandas.DataFrame
+
+    """
+    length_df = len(df)
+
+    peak_candidate_1, _ = find_peaks(df, distance=length_df)  # max
+    peak_candidate_2, _ = find_peaks(-df, distance=length_df)  # min
+
+    return df.index[peak_candidate_1[0]], df.index[peak_candidate_2[0]]
+
