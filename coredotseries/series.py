@@ -260,3 +260,44 @@ def get_peak_points(df):
 
     return df.index[peak_candidate_1[0]], df.index[peak_candidate_2[0]]
 
+
+def get_peak_wave_interval(df, peak_x=None):
+    """get peak wave interval
+
+    Parameter
+    ---------
+    df : pandas.DataFrame
+
+    Return
+    ------
+    (int, int), (int, int) : peak_x, interval_x
+    """
+    if peak_x is None:
+        peak_candidate_1, _ = find_peaks(df, distance=len(df))
+        peak_candidate_2, _ = find_peaks(-df, distance=len(df))
+
+        peak_x_1 = df.index[peak_candidate_1[0]]
+        peak_x_2 = df.index[peak_candidate_2[0]]
+    else:
+        peak_x_1, peak_x_2 = peak_x
+
+    target_value = (df[peak_x_1] + df[peak_x_2]) / 2
+
+    if df[peak_x_1] > df[peak_x_2]:
+        case = 1
+    else:
+        case = 2
+
+    if case == 1:
+        cand_df = df.loc[:peak_x_1]
+        left_point = cand_df.loc[cand_df <= target_value].index.max()
+        cand_df = df.loc[peak_x_2:]
+        right_point = cand_df.loc[cand_df >= target_value].index.min()
+    else:
+        cand_df = df.loc[:peak_x_1]
+        left_point = cand_df.loc[cand_df >= target_value].index.max()
+        cand_df = df.loc[peak_x_2:]
+        right_point = cand_df.loc[cand_df <= target_value].index.min()
+
+    return (peak_x_1, peak_x_2), (left_point, right_point)
+
