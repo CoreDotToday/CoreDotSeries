@@ -18,6 +18,7 @@ test_requirements = [
     "pytest>=3",
 ]
 
+exec(open('coredotseries/version.py').read())
 setup(
     author="CoreDotToday",
     author_email="engine@core.today",
@@ -47,6 +48,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/coredottoday/CoreDotSeries.git",
-    version="0.1.1",
+    version=__version__,
     zip_safe=False,
 )
