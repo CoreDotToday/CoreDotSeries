@@ -13,7 +13,7 @@ def ignore_warning(action='ignore'):
     warnings.filterwarnings(action=action)
 
 
-def plotly_offline_mode(connected=False):
+def plotly_offline_mode(offmode=True):
     """plotly offline mode
 
     Parameter
@@ -21,5 +21,7 @@ def plotly_offline_mode(connected=False):
     connected : boolean
         default False
     """
-    plotly.offline.init_notebook_mode(connected=connected)
-
+    if offmode:
+        plotly.offline.init_notebook_mode(connected=False)
+    else:
+        plotly.offline.init_notebook_mode(connected=True)
