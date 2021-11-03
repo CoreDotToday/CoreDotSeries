@@ -3,11 +3,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import operator
+import math
+import itertools
 import plotly.express as px
 import plotly.graph_objects as go
 from scipy.signal import argrelextrema
 from scipy.signal import find_peaks
-import math
 
 
 def get_feature_point(x, window=2000, center=True, bins=100, ctop=3):
@@ -314,3 +315,38 @@ def get_peak_wave_interval(df, column_name=None, peak_x=None):
 
     return (peak_x_1, peak_x_2), (left_point, right_point)
 
+
+def find_longest_word(word_list):
+    """find longest element in the list
+
+    Parameters
+    ----------
+    word_list : list
+
+    Returns
+    -------
+        longest element in the list
+    """
+    longest_word = ''
+    for word in word_list:
+        if len(word) > len(longest_word):
+            longest_word = word
+    return longest_word
+
+
+def binning(srs, bins=2):
+    """binning y-axis
+
+    Parameters
+    ----------
+    srs : pandas.Series
+    bins : int, optional
+        number of bins, by default 2
+
+    Returns
+    -------
+    pandas.Series
+    """
+    out, _ = pd.cut(srs, bins=bins, retbins=True)
+    result = out.apply(lambda x: x.mid) 
+    return result
