@@ -16,6 +16,10 @@ Installation
 pip install coredotseries
 ```
 
+```
+pip install git+https://github.com/CoreDotToday/CoreDotSeries
+```
+
 
 Features
 --------
