@@ -314,30 +314,30 @@ def get_peak_wave_interval(df, column_name=None, peak_x=None):
     return (peak_x_1, peak_x_2), (left_point, right_point)
 
 
-def find_longest_word(word_list):
+def find_longest_element(element_list):
     """find longest element in the list
 
     Parameters
     ----------
-    word_list : list
+    element_list : list
 
     Returns
     -------
         longest element in the list
     """
-    longest_word = ''
-    for word in word_list:
-        if len(word) > len(longest_word):
-            longest_word = word
-    return longest_word
+    longest_element = ''
+    for element in element_list:
+        if len(element) > len(longest_element):
+            longest_element = element
+    return longest_element
 
 
-def binning(srs, bins=2):
+def binning(s, bins=2):
     """binning y-axis
 
     Parameters
     ----------
-    srs : pandas.Series
+    s : pandas.Series
     bins : int, optional
         number of bins, by default 2
 
@@ -345,6 +345,6 @@ def binning(srs, bins=2):
     -------
     pandas.Series
     """
-    out, _ = pd.cut(srs, bins=bins, retbins=True)
-    result = out.apply(lambda x: x.mid) 
+    out, _ = pd.cut(s, bins=bins, retbins=True)
+    result = out.apply(lambda x: x.mid)
     return result
