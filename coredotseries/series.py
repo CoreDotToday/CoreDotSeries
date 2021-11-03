@@ -181,7 +181,7 @@ def find_break_points(df, columns, version='v3', verbose=False, figure=False):
     return break_point
 
 
-def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_start=None, idx_end=None, cut_ep=False):
+def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_start=None, idx_end=None, std_weight=1.0, cut_ep=False):
     """Find local peaks
 
     Parameter
@@ -197,8 +197,8 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
     df['max'] = df.iloc[argrelextrema(df[column_name].values, np.greater_equal, order=order)[0]][column_name]
 
     # 평균 근처의 값 제거
-    peak_high = df[[column_name]][df['max'] > df[column_name].mean() + df[column_name].std()]
-    peak_low = df[[column_name]][df['min'] < df[column_name].mean() - df[column_name].std()]
+    peak_high = df[[column_name]][df['max'] > df[column_name].mean() + std_weight * df[column_name].std()]
+    peak_low = df[[column_name]][df['min'] < df[column_name].mean() - std_weight * df[column_name].std()]
 
     # 인접한 여러 인덱스가 Peak로 나타날 수 있어서 인덱스가 직전과 동일하면 직전 인덱스 삭제
     # 인접한 인덱스 중 마지막 인덱스만 남김
