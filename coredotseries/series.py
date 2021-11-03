@@ -182,7 +182,7 @@ def find_break_points(df, columns, version='v3', verbose=False, figure=False):
     return break_point
 
 
-def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_start=None, idx_end=None):
+def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_start=None, idx_end=None, cut_ep=False):
     """Find local peaks
 
     Parameter
@@ -210,30 +210,32 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
         if idx-1 in peak_high.index:
             peak_high = peak_high.drop(idx-1)
 
-    # peak_high와 peak_low의 간격이 넓은 문제를 해결하여 첫 번째 포인트 찾기
-    while peak_high.index[0] - peak_low.index[0] > number:
-        peak_low = peak_low.iloc[1:]
-    while peak_low.index[0] - peak_high.index[0] > number:
-        peak_high = peak_high.iloc[1:]
+    # peak_low와 peak high를 연결하여 끝단부분 잘라내기
+    if cut_ep:
+        # peak_high와 peak_low의 간격이 넓은 문제를 해결하여 첫 번째 포인트 찾기
+        while peak_high.index[0] - peak_low.index[0] > number:
+            peak_low = peak_low.iloc[1:]
+        while peak_low.index[0] - peak_high.index[0] > number:
+            peak_high = peak_high.iloc[1:]
 
-    # peak_high와 peak_low의 간격이 넓은 문제를 해결하여 마지막 포인트 찾기
-    while peak_high.index[-1] - peak_low.index[-1] > number:
-        peak_high = peak_high.iloc[:-1]
-    while peak_low.index[-1] - peak_high.index[-1] > number:
-        peak_low = peak_low.iloc[:-1]
+        # peak_high와 peak_low의 간격이 넓은 문제를 해결하여 마지막 포인트 찾기
+        while peak_high.index[-1] - peak_low.index[-1] > number:
+            peak_high = peak_high.iloc[:-1]
+        while peak_low.index[-1] - peak_high.index[-1] > number:
+            peak_low = peak_low.iloc[:-1]
 
-    if idx_start is None:
-        idx_start = df.index[0]
-    if idx_end is None:
-        idx_end = df.index[-1]
-    while peak_low.index[0] - idx_start < number:
-        peak_low = peak_low.iloc[1:]
-    while peak_high.index[0] - idx_start < number:
-        peak_high = peak_high.iloc[1:]
-    while idx_end - peak_low.index[-1] < number:
-        peak_low = peak_low.iloc[:-1]
-    while idx_end - peak_high.index[-1] < number:
-        peak_high = peak_high.iloc[:-1]
+        if idx_start is None:
+            idx_start = df.index[0]
+        if idx_end is None:
+            idx_end = df.index[-1]
+        while peak_low.index[0] - idx_start < number:
+            peak_low = peak_low.iloc[1:]
+        while peak_high.index[0] - idx_start < number:
+            peak_high = peak_high.iloc[1:]
+        while idx_end - peak_low.index[-1] < number:
+            peak_low = peak_low.iloc[:-1]
+        while idx_end - peak_high.index[-1] < number:
+            peak_high = peak_high.iloc[:-1]
 
     # peak 개수 print
     if verbose:
