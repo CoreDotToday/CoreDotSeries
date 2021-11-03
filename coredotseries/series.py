@@ -245,7 +245,7 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
     return peak_low, peak_high
 
 
-def get_peak_points(df):
+def get_peak_points(df, column_name=None):
     """get max, min points
 
     Parameter
@@ -253,15 +253,19 @@ def get_peak_points(df):
     df : pandas.DataFrame
 
     """
-    length_df = len(df)
+    if column_name is None:
+        target_df = df
+    else:
+        target_df = df[column_name]
+    length_df = len(target_df)
 
-    peak_candidate_1, _ = find_peaks(df, distance=length_df)  # max
-    peak_candidate_2, _ = find_peaks(-df, distance=length_df)  # min
+    peak_candidate_1, _ = find_peaks(target_df, distance=length_df)  # max
+    peak_candidate_2, _ = find_peaks(-target_df, distance=length_df)  # min
 
-    return df.index[peak_candidate_1[0]], df.index[peak_candidate_2[0]]
+    return target_df.index[peak_candidate_1[0]], target_df.index[peak_candidate_2[0]]
 
 
-def get_peak_wave_interval(df, peak_x=None):
+def get_peak_wave_interval(df, column_name=None, peak_x=None):
     """get peak wave interval
 
     Parameter
@@ -272,31 +276,38 @@ def get_peak_wave_interval(df, peak_x=None):
     ------
     (int, int), (int, int) : peak_x, interval_x
     """
-    if peak_x is None:
-        peak_candidate_1, _ = find_peaks(df, distance=len(df))
-        peak_candidate_2, _ = find_peaks(-df, distance=len(df))
+    if column_name is None:
+        target_df = df
+    else:
+        target_df = df[column_name]
 
-        peak_x_1 = df.index[peak_candidate_1[0]]
-        peak_x_2 = df.index[peak_candidate_2[0]]
+    if peak_x is None:
+        length_df = len(target_df)
+
+        peak_candidate_1, _ = find_peaks(target_df, distance=length_df)
+        peak_candidate_2, _ = find_peaks(-target_df, distance=length_df)
+
+        peak_x_1 = target_df.index[peak_candidate_1[0]]
+        peak_x_2 = target_df.index[peak_candidate_2[0]]
     else:
         peak_x_1, peak_x_2 = peak_x
 
-    target_value = (df[peak_x_1] + df[peak_x_2]) / 2
+    target_value = (target_df[peak_x_1] + target_df[peak_x_2]) / 2
 
-    if df[peak_x_1] > df[peak_x_2]:
+    if target_df[peak_x_1] > target_df[peak_x_2]:
         case = 1  # sine style
     else:
         case = 2  # -sine style
 
     if case == 1:
-        cand_df = df.loc[:peak_x_1]
+        cand_df = target_df.loc[:peak_x_1]
         left_point = cand_df.loc[cand_df <= target_value].index.max()
-        cand_df = df.loc[peak_x_2:]
+        cand_df = target_df.loc[peak_x_2:]
         right_point = cand_df.loc[cand_df >= target_value].index.min()
     else:
-        cand_df = df.loc[:peak_x_1]
+        cand_df = target_df.loc[:peak_x_1]
         left_point = cand_df.loc[cand_df >= target_value].index.max()
-        cand_df = df.loc[peak_x_2:]
+        cand_df = target_df.loc[peak_x_2:]
         right_point = cand_df.loc[cand_df <= target_value].index.min()
 
     return (peak_x_1, peak_x_2), (left_point, right_point)
