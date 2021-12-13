@@ -192,6 +192,7 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
     order : int, optional
         How many points on each side to use for the comparison to consider comparator(n, n+x) to be True.
     """
+    col_list = df.columns
     # Find local peaks
     df['min'] = df.iloc[argrelextrema(df[column_name].values, np.less_equal, order=order)[0]][column_name]
     df['max'] = df.iloc[argrelextrema(df[column_name].values, np.greater_equal, order=order)[0]][column_name]
@@ -243,6 +244,7 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
         else:
             print('number of peak_low:', len(peak_low))
             print('number of peaks_high:', len(peak_high))
+    df = df[col_list]
     return peak_low, peak_high
 
 
