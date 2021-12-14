@@ -192,7 +192,6 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
     order : int, optional
         How many points on each side to use for the comparison to consider comparator(n, n+x) to be True.
     """
-    col_list = df.columns
     # Find local peaks
     df['min'] = df.iloc[argrelextrema(df[column_name].values, np.less_equal, order=order)[0]][column_name]
     df['max'] = df.iloc[argrelextrema(df[column_name].values, np.greater_equal, order=order)[0]][column_name]
@@ -200,6 +199,7 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
     # 평균 근처의 값 제거
     peak_high = df[[column_name]][df['max'] > df[column_name].mean() + std_weight * df[column_name].std()]
     peak_low = df[[column_name]][df['min'] < df[column_name].mean() - std_weight * df[column_name].std()]
+    df.drop(['min', 'max'], axis=1, inplace=True)
 
     # 인접한 여러 인덱스가 Peak로 나타날 수 있어서 인덱스가 직전과 동일하면 직전 인덱스 삭제
     # 인접한 인덱스 중 마지막 인덱스만 남김
@@ -244,7 +244,7 @@ def find_local_peaks(df, column_name, order=50, verbose=False, number=500, idx_s
         else:
             print('number of peak_low:', len(peak_low))
             print('number of peaks_high:', len(peak_high))
-    df = df[col_list]
+
     return peak_low, peak_high
 
 
