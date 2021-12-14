@@ -295,6 +295,8 @@ def get_peak_wave_interval(df, column_name=None, peak_x=None):
     else:
         peak_x_1, peak_x_2 = peak_x
 
+    peak_x_1, peak_x_2 = min(peak_x_1, peak_x_2), max(peak_x_1, peak_x_2)
+        
     target_value = (target_df[peak_x_1] + target_df[peak_x_2]) / 2
 
     if target_df[peak_x_1] > target_df[peak_x_2]:
